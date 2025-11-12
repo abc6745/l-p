@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class SimpleFractionalKnapsack {
+    public static void main(String[] args) {
+        int[] weight = {10, 40, 20, 30};
+        int[] profit = {60, 40, 100, 120};
+        int capacity = 50;
+        int n = profit.length;
+
+        double[] ratio = new double[n];
+        for (int i = 0; i < n; i++) {
+            ratio[i] = (double) profit[i] / weight[i];
+        }
+
+        
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (ratio[i] < ratio[j]) {
+                   
+                    double temp = ratio[i];
+                    ratio[i] = ratio[j];
+                    ratio[j] = temp;
+
+                    
+                    int tempP = profit[i];
+                    profit[i] = profit[j];
+                    profit[j] = tempP;
+
+                    int tempW = weight[i];
+                    weight[i] = weight[j];
+                    weight[j] = tempW;
+                }
+            }
+        }
+
+        double totalProfit = 0.0;
+        int remaining = capacity;
+
+        
+        for (int i = 0; i < n; i++) {
+            if (weight[i] <= remaining) {
+                totalProfit += profit[i];
+                remaining -= weight[i];
+            } else {
+                totalProfit += ratio[i] * remaining; 
+                break;
+            }
+        }
+
+        System.out.println("Maximum Profit = " + totalProfit);
+    }
+}
